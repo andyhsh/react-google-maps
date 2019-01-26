@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Home from './components/Home.jsx';
 
-ReactDOM.render(<div>{process.env.GOOGLE_MAPS_API_KEY}</div>, document.getElementById('app'));
+ReactDOM.render(<Home />, document.getElementById('app'));
 
 module.hot.accept();
