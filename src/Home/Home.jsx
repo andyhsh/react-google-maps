@@ -1,5 +1,5 @@
 import React, { Component } from 'React';
-import Map from './Map';
+import Map from '../Map/Map';
 
 class Home extends Component {
   onLoad() {
@@ -7,15 +7,19 @@ class Home extends Component {
   }
 
   render() {
-    const style = {
-      width: '100vw',
-      height: '100vh',
-    };
+    const hongKongCoords = {
+      lat: 22.3964,
+      lng: 114.1095
+    }
 
     return (
-      <div style={style}>
+      <div>
         <Map
           id="main-map"
+          options={{
+            zoom: 10,
+            center: hongKongCoords
+          }}
           onLoad={this.onLoad}
         />
       </div>
