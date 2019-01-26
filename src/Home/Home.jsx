@@ -1,21 +1,24 @@
 import React, { Component } from 'React';
 import Map from '../Map/Map';
-import TextInput from '../TextInput/TextInput';
+import Autocomplete from '../Autocomplete/Autocomplete';
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.onChangeInput = this.onChangeInput.bind(this);
+    this.onLoad = this.onLoad.bind(this);
     this.state = {
-      input: ''
+      origin: '',
+      destination: '',
+      map: null,
     }
   }
-  onLoad() {
-    console.log('load google maps');
+  onLoad(map) {
+    this.setState({ map });
   }
 
   onChangeInput(id, value) {
-    console.log(id, value);
+    console.log('Home: ', id, value);
     this.setState({ [id]: value })
   }
 
@@ -27,10 +30,18 @@ class Home extends Component {
 
     return (
       <div>
-        <TextInput
-          id="input"
-          value={this.state.input}
+        <Autocomplete
+          id="origin"
+          value={this.state.origin}
           placeholder="Enter an Origin Location"
+          map={this.state.map}
+          onChange={this.onChangeInput}
+        />
+        <Autocomplete
+          id="destination"
+          value={this.state.destination}
+          placeholder="Enter a Destination Location"
+          map={this.state.map}
           onChange={this.onChangeInput}
         />
         <Map
@@ -40,6 +51,8 @@ class Home extends Component {
             center: hongKongCoords
           }}
           onLoad={this.onLoad}
+          originInput
+          destinationInput
         />
       </div>
     );

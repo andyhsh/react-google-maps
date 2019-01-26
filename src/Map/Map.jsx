@@ -16,7 +16,7 @@ class Map extends Component {
 
     let scriptEl = document.createElement('script');
     scriptEl.type = 'text/javascript';
-    scriptEl.src = `https://maps.google.com/maps/api/js?key=${process.env.GOOGLE_MAPS_API_KEY}`;
+    scriptEl.src = `https://maps.google.com/maps/api/js?key=${process.env.GOOGLE_MAPS_API_KEY}&libraries=places`;
 
     const firstScriptEl = document.getElementsByTagName('script')[0];
     firstScriptEl.parentNode.insertBefore(scriptEl, firstScriptEl);

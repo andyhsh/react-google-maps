@@ -5,28 +5,30 @@ import TextInput from '../TextInput/TextInput';
 class Autocomplete extends Component {
   constructor(props) {
     super(props);
-    this.onChange = this.onChange.bind(this);
+    this.inputRef = React.createRef();
   }
 
-  onChange(id, value) {
-    this.props.onChange(id, value);
+  componentWillUpdate(nextProps, nextState) {
+    if (!this.autocomplete && nextProps.map) {
+      this._initialiseAutocomplete(nextProps.map);
+    }
+  }
+
+  _initialiseAutocomplete(map) {
+    this.autocomplete = new google.maps.places.Autocomplete(this.inputRef.current);
+    this.autocomplete.bindTo('bounds', map);
+    this.autocomplete.addListener('place_changed', () => {
+      const place = this.autocomplete.getPlace();
+      this.props.onChange(this.props.id, place.formatted_address);
+    });
   }
 
   render() {
-    const { id, value, placeholder, onChange } = this.props;
-
-    return (
-      <TextInput
-        id={id}
-        value={value}
-        placeholder={placeholder}
-        onChange={onChange}
-      />
-    )
+    return <TextInput forwardedRef={this.inputRef} {...this.props} />;
   }
 }
 
-TextInput.propTypes = {
+Autocomplete.propTypes = {
   id: PropTypes.string.isRequired,
   value: PropTypes.string,
   placeholder: PropTypes.string,
