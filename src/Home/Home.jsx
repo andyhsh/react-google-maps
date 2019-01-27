@@ -35,6 +35,14 @@ class Home extends Component {
 
     MockApi.submitData(payload).then(response => {
       console.log('Home: ', response);
+      MockApi.getRoute(response.token).then(response => {
+        console.log('Home getROute: ', response)
+      }).catch(error => {
+        console.log('Home error: ', error)
+        if (error.status === 'failure') {
+          // Display a error.error "Location not accessible by car"
+        }
+      })
     })
   }
 
