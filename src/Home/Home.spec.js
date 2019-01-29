@@ -22,24 +22,14 @@ describe('Home', () => {
       };
 
       MockApi.submitData = jest.fn().mockReturnValue(Promise.resolve());
-      // MockApi.getRoute = jest.fn();
+      MockApi.getRoute = jest.fn();
 
       const submit = 'Button[content="Submit"]';
       wrapper.find(submit).simulate('click');
       expect(MockApi.submitData).toBeCalledWith(payload);
     });
 
-    it('calls MockApi.getRoute with the response token', () => {
-      MockApi.submitData = jest.fn().mockReturnValue(Promise.resolve(response));
-      MockApi.getRoute = jest.fn().mockReturnValue(Promise.resolve(response));
-      const wrapper = shallow(<Home />);
-      const response = {
-        token: 'UUID',
-      };
+    // further tests to determine if paths state is properly set after api call
 
-      const submit = 'Button[content="Submit"]';
-      wrapper.find(submit).simulate('click');
-      expect(MockApi.getRoute).toBeCalledWith(response.token);
-    });
   });
 });
