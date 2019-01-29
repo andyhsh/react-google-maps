@@ -17,6 +17,7 @@ class Home extends Component {
       destination: '',
       path: [],
       map: null,
+      loading: false,
     };
   }
 
@@ -34,6 +35,8 @@ class Home extends Component {
       destination: this.state.destination,
     };
 
+    this.setState({ loading: true });
+
     MockApi.submitData(payload).then(response => {
       console.log('Home: ', response);
       MockApi.getRoute(response.token)
@@ -46,6 +49,9 @@ class Home extends Component {
           if (error.status === 'failure') {
             // Display a error.error "Location not accessible by car"
           }
+        })
+        .finally(() => {
+          this.setState({ loading: false });
         });
     });
   }
@@ -76,9 +82,10 @@ class Home extends Component {
             <Button
               content="Submit"
               onClick={this.onSubmit}
-              disabled={!this.state.origin || !this.state.destination}
+              loading={this.state.loading}
+              disabled={!this.state.origin || !this.state.destination || this.state.loading}
             />
-            <Button content="Reset" onClick={this.onReset} />
+            <Button content="Reset" onClick={this.onReset} disabled={this.state.loading} />
           </div>
         </div>
         <Map id="main-map" onLoad={this.onLoad} path={this.state.path} />

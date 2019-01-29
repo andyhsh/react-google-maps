@@ -13,6 +13,7 @@
 
 .button-controls {
   margin-top: 10px;
+  display: flex;
 }
 
 @media (min-width: 800px) {

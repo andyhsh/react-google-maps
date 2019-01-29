@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TextInput from '../TextInput/TextInput';
+import style from './Autocomplete.css';
 
 class Autocomplete extends Component {
   constructor(props) {
