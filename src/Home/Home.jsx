@@ -55,11 +55,6 @@ class Home extends Component {
   }
 
   render() {
-    const hongKongCoords = {
-      lat: 22.3964,
-      lng: 114.1095,
-    };
-
     return (
       <div className={style.homeContainer}>
         <Autocomplete
@@ -82,17 +77,7 @@ class Home extends Component {
           disabled={!this.state.origin || !this.state.destination}
         />
         <Button content="Reset" onClick={this.onReset} />
-        <Map
-          id="main-map"
-          options={{
-            zoom: 12,
-            center: hongKongCoords,
-          }}
-          onLoad={this.onLoad}
-          path={this.state.path}
-          originInput={this.state.origin}
-          destinationInput={this.state.destination}
-        />
+        <Map id="main-map" onLoad={this.onLoad} path={this.state.path} />
       </div>
     );
   }

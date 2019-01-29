@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class Map extends Component {
   constructor(props) {
@@ -23,25 +24,37 @@ class Map extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.path.length && prevProps.path === this.props.path) {
+    if (this.props.path.length && prevProps.path !== this.props.path) {
       this._displayRoute(this.props.path);
+    }
+
+    if (!this.props.path.length) {
+      this._resetRoute();
     }
   }
 
   _onLoadMap() {
-    const { id, options, onLoad } = this.props;
-    const map = new window.google.maps.Map(document.getElementById(id), options);
-    this._initialiseDirectionsHandler(map);
-    onLoad(map);
+    const {
+      id,
+      options = {
+        zoom: 16,
+        center: { lat: 22.335399, lng: 114.176185 },
+      },
+      onLoad,
+    } = this.props;
+    this.map = new window.google.maps.Map(document.getElementById(id), options);
+    this._initialiseDirectionsHandler();
+    onLoad(this.map);
   }
 
-  _initialiseDirectionsHandler(map) {
+  _initialiseDirectionsHandler() {
     this.directionsService = new google.maps.DirectionsService();
     this.directionsDisplay = new google.maps.DirectionsRenderer();
-    this.directionsDisplay.setMap(map);
   }
 
   _displayRoute(path) {
+    this.directionsDisplay.setMap(this.map);
+
     const { origin, waypoints, destination } = this._buildRouteObject(path);
     const request = {
       origin,
@@ -77,6 +90,10 @@ class Map extends Component {
     return route;
   }
 
+  _resetRoute() {
+    this.directionsDisplay.setMap(null);
+  }
+
   render() {
     const { id } = this.props;
     const style = {
@@ -87,5 +104,11 @@ class Map extends Component {
     return <div style={style} id={id} />;
   }
 }
+
+Map.propTypes = {
+  options: PropTypes.object,
+  onLoad: PropTypes.func.isRequired,
+  path: PropTypes.array,
+};
 
 export default Map;
