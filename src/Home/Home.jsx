@@ -3,6 +3,7 @@ import Map from '../Map/Map';
 import Autocomplete from '../Autocomplete/Autocomplete';
 import Button from '../Button/Button';
 import MockApi from '../MockApi/MockApi';
+import style from './Home.css';
 
 class Home extends Component {
   constructor(props) {
@@ -14,6 +15,7 @@ class Home extends Component {
     this.state = {
       origin: '',
       destination: '',
+      path: [],
       map: null,
     };
   }
@@ -23,31 +25,33 @@ class Home extends Component {
   }
 
   onChangeInput(id, value) {
-    console.log('Home: ', id, value);
     this.setState({ [id]: value });
   }
 
   onSubmit() {
     const payload = {
       origin: this.state.origin,
-      destination: this.state.destination
+      destination: this.state.destination,
     };
 
     MockApi.submitData(payload).then(response => {
       console.log('Home: ', response);
-      MockApi.getRoute(response.token).then(response => {
-        console.log('Home getROute: ', response)
-      }).catch(error => {
-        console.log('Home error: ', error)
-        if (error.status === 'failure') {
-          // Display a error.error "Location not accessible by car"
-        }
-      })
-    })
+      MockApi.getRoute(response.token)
+        .then(response => {
+          console.log('Home getROute: ', response.path);
+          this.setState({ path: response.path });
+        })
+        .catch(error => {
+          console.log('Home error: ', error);
+          if (error.status === 'failure') {
+            // Display a error.error "Location not accessible by car"
+          }
+        });
+    });
   }
 
   onReset() {
-    this.setState({ origin: '', destination: '' })
+    this.setState({ origin: '', destination: '', path: [] });
   }
 
   render() {
@@ -57,7 +61,7 @@ class Home extends Component {
     };
 
     return (
-      <div>
+      <div className={style.homeContainer}>
         <Autocomplete
           id="origin"
           value={this.state.origin}
@@ -72,15 +76,22 @@ class Home extends Component {
           map={this.state.map}
           onChange={this.onChangeInput}
         />
-        <Button content="Submit" onClick={this.onSubmit} />
+        <Button
+          content="Submit"
+          onClick={this.onSubmit}
+          disabled={!this.state.origin || !this.state.destination}
+        />
         <Button content="Reset" onClick={this.onReset} />
         <Map
           id="main-map"
           options={{
-            zoom: 10,
+            zoom: 12,
             center: hongKongCoords,
           }}
           onLoad={this.onLoad}
+          path={this.state.path}
+          originInput={this.state.origin}
+          destinationInput={this.state.destination}
         />
       </div>
     );

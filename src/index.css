@@ -1,0 +1,5 @@
+:global(html),
+:global(body),
+:global(body > div) {
+  height: 100%;
+}
