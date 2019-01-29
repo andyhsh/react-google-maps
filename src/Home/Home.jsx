@@ -57,26 +57,30 @@ class Home extends Component {
   render() {
     return (
       <div className={style.homeContainer}>
-        <Autocomplete
-          id="origin"
-          value={this.state.origin}
-          placeholder="Enter an Origin Location"
-          map={this.state.map}
-          onChange={this.onChangeInput}
-        />
-        <Autocomplete
-          id="destination"
-          value={this.state.destination}
-          placeholder="Enter a Destination Location"
-          map={this.state.map}
-          onChange={this.onChangeInput}
-        />
-        <Button
-          content="Submit"
-          onClick={this.onSubmit}
-          disabled={!this.state.origin || !this.state.destination}
-        />
-        <Button content="Reset" onClick={this.onReset} />
+        <div className={style.controls}>
+          <Autocomplete
+            id="origin"
+            value={this.state.origin}
+            placeholder="Enter an Origin Location"
+            map={this.state.map}
+            onChange={this.onChangeInput}
+          />
+          <Autocomplete
+            id="destination"
+            value={this.state.destination}
+            placeholder="Enter a Destination Location"
+            map={this.state.map}
+            onChange={this.onChangeInput}
+          />
+          <div className={style.buttonControls}>
+            <Button
+              content="Submit"
+              onClick={this.onSubmit}
+              disabled={!this.state.origin || !this.state.destination}
+            />
+            <Button content="Reset" onClick={this.onReset} />
+          </div>
+        </div>
         <Map id="main-map" onLoad={this.onLoad} path={this.state.path} />
       </div>
     );

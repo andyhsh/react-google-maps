@@ -6,8 +6,10 @@
   font-weight: 300;
   height: 35px;
   min-width: 100px;
+  margin: 0 10px;
   border: none;
   text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   cursor: pointer;
 }
 

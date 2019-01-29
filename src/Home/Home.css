@@ -1,3 +1,26 @@
 .home-container {
   height: 100%;
 }
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+}
+
+.button-controls {
+  margin-top: 10px;
+}
+
+@media (min-width: 800px) {
+  .controls {
+    flex-direction: row;
+  }
+
+  .button-controls {
+    margin-top: 0;
+  }
+}

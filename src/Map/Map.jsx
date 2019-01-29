@@ -39,6 +39,7 @@ class Map extends Component {
       options = {
         zoom: 16,
         center: { lat: 22.335399, lng: 114.176185 },
+        mapTypeControl: false,
       },
       onLoad,
     } = this.props;
