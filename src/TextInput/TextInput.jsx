@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import style from './TextInput.css';
 
 class TextInput extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class TextInput extends Component {
     return (
       <input
         id={id}
+        className={style.input}
         ref={forwardedRef}
         type="text"
         value={value}
