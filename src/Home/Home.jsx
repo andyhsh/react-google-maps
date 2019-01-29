@@ -2,6 +2,7 @@ import React, { Component } from 'React';
 import Map from '../Map/Map';
 import Autocomplete from '../Autocomplete/Autocomplete';
 import Button from '../Button/Button';
+import ErrorBox from '../ErrorBox/ErrorBox';
 import MockApi from '../MockApi/MockApi';
 import style from './Home.css';
 
@@ -12,12 +13,14 @@ class Home extends Component {
     this.onLoad = this.onLoad.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onReset = this.onReset.bind(this);
+    this.onCloseError = this.onCloseError.bind(this);
     this.state = {
       origin: '',
       destination: '',
       path: [],
       map: null,
       loading: false,
+      error: null,
     };
   }
 
@@ -35,19 +38,17 @@ class Home extends Component {
       destination: this.state.destination,
     };
 
-    this.setState({ loading: true });
+    this.setState({ loading: true, error: null });
 
     MockApi.submitData(payload).then(response => {
-      console.log('Home: ', response);
       MockApi.getRoute(response.token)
         .then(response => {
-          console.log('Home getROute: ', response.path);
           this.setState({ path: response.path });
         })
         .catch(error => {
-          console.log('Home error: ', error);
           if (error.status === 'failure') {
-            // Display a error.error "Location not accessible by car"
+            const errorMessage = `${error.error}. Please try again.`;
+            this.setState({ error: errorMessage });
           }
         })
         .finally(() => {
@@ -57,12 +58,17 @@ class Home extends Component {
   }
 
   onReset() {
-    this.setState({ origin: '', destination: '', path: [] });
+    this.setState({ origin: '', destination: '', path: [], error: null });
+  }
+
+  onCloseError() {
+    this.setState({ error: null });
   }
 
   render() {
     return (
       <div className={style.homeContainer}>
+        {this.state.error && <ErrorBox onClick={this.onCloseError} message={this.state.error} />}
         <div className={style.controls}>
           <Autocomplete
             id="origin"
